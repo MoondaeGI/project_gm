@@ -22,7 +22,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.login(dto));
     }
 
-    @PostMapping("/signIn")
+    @PostMapping
     public ResponseEntity<Void> signIn(@RequestBody SignInDTO dto) {
         memberService.signIn(dto);
         return ResponseEntity.ok().build();
