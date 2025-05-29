@@ -20,7 +20,7 @@ public class Token {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "token_seq_gene")
     private Long id;
-    @Column(name = "TOKEN", nullable = false)
+    @Column(name = "REFRESH_TOKEN", nullable = false)
     private String token;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID", nullable = false)

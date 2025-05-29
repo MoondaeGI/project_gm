@@ -1,11 +1,14 @@
 package com.example.gitmanager.member.entity;
 
 import com.example.gitmanager.member.dto.member.MemberUpdateDTO;
+import com.example.gitmanager.notice.entity.NoticeReply;
 import com.example.gitmanager.util.entity.RecordTime;
 import com.example.gitmanager.util.enums.ROLE;
 import com.example.gitmanager.util.enums.SignInType;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -41,6 +44,9 @@ public class Member extends RecordTime {
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Token token;
+
+    @OneToMany(mappedBy = "writer")
+    private List<NoticeReply> noticeReplyList;
 
     public void update(MemberUpdateDTO dto) {
         this.name = dto.getName();
