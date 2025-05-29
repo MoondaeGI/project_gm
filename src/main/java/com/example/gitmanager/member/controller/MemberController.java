@@ -44,8 +44,8 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/dupliCheck/{type}/{target}")
-    public ResponseEntity<Boolean> dupliCheck(@PathVariable String type, @PathVariable String target) {
+    @GetMapping("/check/{type}/{target}")
+    public ResponseEntity<Boolean> duplicateCheck(@PathVariable String type, @PathVariable String target) {
         return switch (type) {
             case "name" -> ResponseEntity.ok(memberService.isNameDuplicate(target));
             case "email" -> ResponseEntity.ok(memberService.isEmailDuplicate(target));
