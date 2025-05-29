@@ -8,6 +8,9 @@ import com.example.gitmanager.member.dto.member.SignInDTO;
 public interface MemberService {
     LoginResultDTO login(LoginDTO dto);
     void signIn(SignInDTO dto);
-    void update(MemberUpdateDTO dto);
-    void signOut(long id);
+    void update(MemberUpdateDTO dto, String loginId);
+    void signOut(long id, String loginId);
+    boolean isLoginIdDuplicate(String loginId);
+    boolean isEmailDuplicate(String email);
+    boolean isNameDuplicate(String name);
 }

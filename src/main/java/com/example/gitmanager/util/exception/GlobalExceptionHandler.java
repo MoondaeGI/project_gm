@@ -12,4 +12,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(exception.getMessage());
     }
+
+    @ExceptionHandler(UnAuthenticationException.class)
+    public ResponseEntity<String> unAuthenticationExceptionHandler(UnAuthenticationException exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(exception.getMessage());
+    }
 }

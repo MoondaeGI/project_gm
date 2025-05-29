@@ -10,14 +10,15 @@ import com.example.gitmanager.member.repository.MemberRepository;
 import com.example.gitmanager.member.repository.TokenRepository;
 import com.example.gitmanager.util.enums.ROLE;
 import com.example.gitmanager.util.enums.SignInType;
+import com.example.gitmanager.util.exception.UnAuthenticationException;
 import com.example.gitmanager.util.util.JWTUtil;
 import com.example.gitmanager.util.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -74,19 +75,52 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void update(MemberUpdateDTO dto) {
+    public void update(MemberUpdateDTO dto, String loginId) {
+        Member loginMember = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%s를 가진 회원은 존재하지 않습니다.", loginId)));
+
         Member member = memberRepository.findById(dto.getId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%d를 가진 회원은 존재하지 않습니다.", dto.getId())));
-        member.update(dto);
+
+        if (Objects.equals(member.getId(), loginMember.getId()) || loginMember.getRole().equals(ROLE.ADMIN)) {
+            member.update(dto);
+        }
+
+        throw new UnAuthenticationException();
     }
 
     @Transactional
     @Override
-    public void signOut(long id) {
+    public void signOut(long id, String loginId) {
+        Member loginMember = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%s를 가진 회원은 존재하지 않습니다.", loginId)));
+
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%d를 가진 회원은 존재하지 않습니다.", id)));
-        memberRepository.delete(member);
+
+        if (Objects.equals(member.getId(), loginMember.getId()) || loginMember.getRole().equals(ROLE.ADMIN)) {
+            memberRepository.delete(member);
+        }
+
+        throw new UnAuthenticationException();
+    }
+
+    @Override
+    public boolean isLoginIdDuplicate(String loginId) {
+        return memberRepository.existsByLoginId(loginId);
+    }
+
+    @Override
+    public boolean isEmailDuplicate(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean isNameDuplicate(String name) {
+        return memberRepository.existsByName(name);
     }
 }
