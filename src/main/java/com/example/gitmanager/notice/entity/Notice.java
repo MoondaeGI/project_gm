@@ -1,5 +1,6 @@
 package com.example.gitmanager.notice.entity;
 
+import com.example.gitmanager.notice.dto.NoticeUpdateDTO;
 import com.example.gitmanager.util.entity.RecordTime;
 import com.example.gitmanager.util.enums.Yn;
 import jakarta.persistence.*;
@@ -38,4 +39,17 @@ public class Notice extends RecordTime {
 
     @OneToMany(mappedBy = "notice", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<NoticeReply> noticeReplyList;
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
+
+    public void update(NoticeUpdateDTO dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+    }
+
+    public void toggleOpenYn() {
+        this.openYn = this.openYn == Yn.Y ? Yn.N : Yn.Y;
+    }
 }

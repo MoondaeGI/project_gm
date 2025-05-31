@@ -20,9 +20,13 @@ public class NoticeCategory {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "notice_ct_seq_gene")
     private Long id;
-    @Column(name = "NAME", length = 100, nullable = false)
+    @Column(name = "NAME", length = 100, nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "noticeCategory", cascade = CascadeType.REMOVE, orphanRemoval = true)
     public List<Notice> noticeList;
+
+    public void update(String name) {
+        this.name = name;
+    }
 }
