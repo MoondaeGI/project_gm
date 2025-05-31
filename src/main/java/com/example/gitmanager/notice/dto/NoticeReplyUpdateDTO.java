@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class NoticeReplyUpdateDTO {
     private long id;
+    private long writerId;
     private String content;
 }
