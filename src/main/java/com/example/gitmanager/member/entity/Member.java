@@ -2,6 +2,7 @@ package com.example.gitmanager.member.entity;
 
 import com.example.gitmanager.member.dto.member.MemberUpdateDTO;
 import com.example.gitmanager.notice.entity.NoticeReply;
+import com.example.gitmanager.project.entity.ProjectMember;
 import com.example.gitmanager.util.entity.RecordTime;
 import com.example.gitmanager.util.enums.ROLE;
 import com.example.gitmanager.util.enums.SignInType;
@@ -47,6 +48,8 @@ public class Member extends RecordTime {
 
     @OneToMany(mappedBy = "writer")
     private List<NoticeReply> noticeReplyList;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ProjectMember> projectMemberList;
 
     public void update(MemberUpdateDTO dto) {
         this.name = dto.getName();
