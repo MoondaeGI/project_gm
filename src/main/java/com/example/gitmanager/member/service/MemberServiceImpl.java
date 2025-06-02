@@ -11,6 +11,7 @@ import com.example.gitmanager.member.repository.TokenRepository;
 import com.example.gitmanager.util.enums.ROLE;
 import com.example.gitmanager.util.enums.SignInType;
 import com.example.gitmanager.util.exception.UnAuthenticationException;
+import com.example.gitmanager.util.util.FileUtil;
 import com.example.gitmanager.util.util.JWTUtil;
 import com.example.gitmanager.util.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
     private final TokenRepository tokenRepository;
     private final JWTUtil jwtUtil;
     private final PasswordUtil passwordUtil;
+    private final FileUtil fileUtil;
 
     @Transactional
     @Override
@@ -62,6 +64,11 @@ public class MemberServiceImpl implements MemberService {
     public void signIn(SignInDTO dto) {
         String password = passwordUtil.encodePassword(dto.getPassword());
 
+        if (dto.getMultipartFile() != null) {
+            String profileImg = fileUtil.uploadProfileImg(dto.getMultipartFile());
+            dto.setProfileImg(profileImg);
+        }
+
         memberRepository.save(Member.builder()
                 .name(dto.getName())
                 .loginId(dto.getLoginId())
@@ -85,6 +92,11 @@ public class MemberServiceImpl implements MemberService {
                         String.format("%d를 가진 회원은 존재하지 않습니다.", dto.getId())));
 
         if (Objects.equals(member.getId(), loginMember.getId()) || loginMember.getRole().equals(ROLE.ADMIN)) {
+            if (dto.getMultipartFile() != null) {
+                String profileImg = fileUtil.uploadProfileImg(dto.getMultipartFile());
+                dto.setProfileImg(profileImg);
+            }
+
             member.update(dto);
         }
 
@@ -103,6 +115,7 @@ public class MemberServiceImpl implements MemberService {
                         String.format("%d를 가진 회원은 존재하지 않습니다.", id)));
 
         if (Objects.equals(member.getId(), loginMember.getId()) || loginMember.getRole().equals(ROLE.ADMIN)) {
+            fileUtil.delete(member.getProfileImg());
             memberRepository.delete(member);
         }
 

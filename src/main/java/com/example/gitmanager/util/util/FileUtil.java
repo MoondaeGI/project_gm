@@ -43,6 +43,17 @@ public class FileUtil {
                 .build();
     }
 
+    public String uploadProfileImg(MultipartFile multipartFile) {
+        String originFileName = multipartFile.getOriginalFilename();
+        String systemFileName = UUID.randomUUID() + "_" + originFileName;
+
+        storage.create(BlobInfo.newBuilder(
+                BlobId.of(bucketName, systemFileName)).build());
+
+        return String.format("https://storage.googleapis.com/%s/member/%s/%s",
+                bucketName, LocalDate.now(), systemFileName);
+    }
+
     public void delete(String fileName) {
         BlobId blobId = BlobId.of(bucketName, fileName);
         storage.delete(blobId);

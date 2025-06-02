@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
@@ -28,7 +29,8 @@ public class MemberController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody MemberUpdateDTO dto, HttpServletRequest request) {
+    public ResponseEntity<Void> update(
+            @RequestBody MemberUpdateDTO dto, HttpServletRequest request) {
         String loginId = (String) request.getAttribute("loginId");
 
         memberService.update(dto, loginId);

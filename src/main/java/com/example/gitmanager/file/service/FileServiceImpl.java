@@ -6,6 +6,8 @@ import com.example.gitmanager.file.entity.FileDetail;
 import com.example.gitmanager.file.entity.Files;
 import com.example.gitmanager.file.repository.FileDetailRepository;
 import com.example.gitmanager.file.repository.FilesRepository;
+import com.example.gitmanager.member.entity.Member;
+import com.example.gitmanager.member.repository.MemberRepository;
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.notice.repository.NoticeRepository;
 import com.example.gitmanager.project.entity.Project;
@@ -27,6 +29,7 @@ public class FileServiceImpl implements FileService {
     private final FileDetailRepository fileDetailRepository;
     private final NoticeRepository noticeRepository;
     private final ProjectRepository projectRepository;
+    private final MemberRepository memberRepository;
 
     private final FileUtil fileUtil;
 
@@ -56,6 +59,15 @@ public class FileServiceImpl implements FileService {
         return FileDetailDTO.of(fileDetailRepository.findBySystemFileName(systemFileName)
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%s의 이름을 가진 파일이 존재하지 않습니다.", systemFileName))));
+    }
+
+    @Override
+    public void updateProfileImg(MultipartFile multipartFile, long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%d의 번호를 가진 유저가 없습니다.", memberId)));
+
+        String profileImgPath = fileUtil.uploadProfileImg(multipartFile);
     }
 
     @Transactional
