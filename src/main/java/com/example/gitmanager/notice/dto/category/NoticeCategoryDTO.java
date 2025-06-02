@@ -1,4 +1,4 @@
-package com.example.gitmanager.notice.dto;
+package com.example.gitmanager.notice.dto.category;
 
 import com.example.gitmanager.notice.entity.NoticeCategory;
 import lombok.AllArgsConstructor;

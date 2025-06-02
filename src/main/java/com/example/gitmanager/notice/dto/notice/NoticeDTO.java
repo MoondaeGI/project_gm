@@ -1,4 +1,4 @@
-package com.example.gitmanager.notice.dto;
+package com.example.gitmanager.notice.dto.notice;
 
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.util.enums.Yn;

@@ -1,8 +1,8 @@
 package com.example.gitmanager.notice.service;
 
-import com.example.gitmanager.notice.dto.NoticeReplyDTO;
-import com.example.gitmanager.notice.dto.NoticeReplyInsertDTO;
-import com.example.gitmanager.notice.dto.NoticeReplyUpdateDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyInsertDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyUpdateDTO;
 
 import java.util.List;
 

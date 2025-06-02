@@ -1,6 +1,6 @@
 package com.example.gitmanager.notice.entity;
 
-import com.example.gitmanager.notice.dto.NoticeUpdateDTO;
+import com.example.gitmanager.notice.dto.notice.NoticeUpdateDTO;
 import com.example.gitmanager.util.entity.RecordTime;
 import com.example.gitmanager.util.enums.Yn;
 import jakarta.persistence.*;

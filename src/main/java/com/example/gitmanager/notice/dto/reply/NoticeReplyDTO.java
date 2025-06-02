@@ -1,4 +1,4 @@
-package com.example.gitmanager.notice.dto;
+package com.example.gitmanager.notice.dto.reply;
 
 import com.example.gitmanager.notice.entity.NoticeReply;
 import lombok.AllArgsConstructor;

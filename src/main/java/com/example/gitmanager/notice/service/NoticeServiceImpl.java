@@ -1,13 +1,16 @@
 package com.example.gitmanager.notice.service;
 
-import com.example.gitmanager.notice.dto.NoticeDTO;
-import com.example.gitmanager.notice.dto.NoticeInsertDTO;
-import com.example.gitmanager.notice.dto.NoticeUpdateDTO;
+import com.example.gitmanager.file.dto.FilesDTO;
+import com.example.gitmanager.file.service.FileService;
+import com.example.gitmanager.notice.dto.notice.NoticeDTO;
+import com.example.gitmanager.notice.dto.notice.NoticeInsertDTO;
+import com.example.gitmanager.notice.dto.notice.NoticeUpdateDTO;
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.notice.entity.NoticeCategory;
 import com.example.gitmanager.notice.repository.NoticeCategoryRepository;
 import com.example.gitmanager.notice.repository.NoticeRepository;
 import com.example.gitmanager.util.enums.Yn;
+import com.example.gitmanager.util.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +24,7 @@ import java.util.List;
 public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepository noticeRepository;
     private final NoticeCategoryRepository noticeCategoryRepository;
+    private final FileService fileService;
 
     @Override
     public List<NoticeDTO> findAll(int page) {
@@ -100,6 +104,14 @@ public class NoticeServiceImpl implements NoticeService {
                 .openYn(Yn.Y)
                 .build();
         noticeRepository.save(notice);
+
+        if (dto.getMultipartFiles() != null) {
+            FilesDTO filesDTO = FilesDTO.builder()
+                    .mapperName("notice")
+                    .mapperId(notice.getId())
+                    .build();
+            fileService.insert(dto.getMultipartFiles(), filesDTO);
+        }
     }
 
     @Transactional
@@ -109,6 +121,8 @@ public class NoticeServiceImpl implements NoticeService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%d의 번호를 가진 공지사항은 없습니다.", dto.getId())));
         notice.update(dto);
+
+        fileService.update(dto.getMultipartFiles(), dto.getFileDetailDTOList());
     }
 
     @Transactional

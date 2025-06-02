@@ -2,9 +2,9 @@ package com.example.gitmanager.notice.service;
 
 import com.example.gitmanager.member.entity.Member;
 import com.example.gitmanager.member.repository.MemberRepository;
-import com.example.gitmanager.notice.dto.NoticeReplyDTO;
-import com.example.gitmanager.notice.dto.NoticeReplyInsertDTO;
-import com.example.gitmanager.notice.dto.NoticeReplyUpdateDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyInsertDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyUpdateDTO;
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.notice.entity.NoticeReply;
 import com.example.gitmanager.notice.repository.NoticeReplyRepository;

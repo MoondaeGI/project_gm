@@ -1,6 +1,6 @@
 package com.example.gitmanager.notice.service;
 
-import com.example.gitmanager.notice.dto.NoticeCategoryDTO;
+import com.example.gitmanager.notice.dto.category.NoticeCategoryDTO;
 import com.example.gitmanager.notice.entity.NoticeCategory;
 import com.example.gitmanager.notice.repository.NoticeCategoryRepository;
 import lombok.RequiredArgsConstructor;

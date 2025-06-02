@@ -1,6 +1,12 @@
 package com.example.gitmanager.notice.controller;
 
-import com.example.gitmanager.notice.dto.*;
+import com.example.gitmanager.notice.dto.category.NoticeCategoryDTO;
+import com.example.gitmanager.notice.dto.notice.NoticeDTO;
+import com.example.gitmanager.notice.dto.notice.NoticeInsertDTO;
+import com.example.gitmanager.notice.dto.notice.NoticeUpdateDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyInsertDTO;
+import com.example.gitmanager.notice.dto.reply.NoticeReplyUpdateDTO;
 import com.example.gitmanager.notice.service.NoticeCategoryService;
 import com.example.gitmanager.notice.service.NoticeReplyService;
 import com.example.gitmanager.notice.service.NoticeService;
