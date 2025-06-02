@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 public class FileController {
     private final FileService fileService;
 
-    @PostMapping("/download/{fileName}")
+    @GetMapping("/download/{fileName}")
     public ResponseEntity<?> download(@PathVariable String fileName) {
         FileDetailDTO fileDetailDTO = fileService.findBySystemFileName(fileName);
 
