@@ -20,6 +20,7 @@ public class NoticeReply extends RecordTime {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "notice_re_seq_gene")
     private Long id;
+    @Builder.Default
     @Column(name = "DEPTH", nullable = false)
     private Integer depth = 0;
     @Column(name = "CONTENT", length = 300, nullable = false)

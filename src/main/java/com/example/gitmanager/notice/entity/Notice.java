@@ -27,8 +27,10 @@ public class Notice extends RecordTime {
     private String title;
     @Column(name = "CONTENT", columnDefinition = "CLOB", nullable = false)
     private String content;
+    @Builder.Default
     @Column(name = "VIEW_COUNT", nullable = false)
     private Integer viewCount = 0;
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "OPEN_YN", nullable = false)
     private Yn openYn = Yn.Y;

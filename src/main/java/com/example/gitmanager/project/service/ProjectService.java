@@ -11,4 +11,5 @@ public interface ProjectService {
     void insert(String url);
     void update(long id, String loginId);
     void delete(long id, String loginId);
+    void toggleType(long id, String loginId);
 }

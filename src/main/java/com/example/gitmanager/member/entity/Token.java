@@ -25,6 +25,7 @@ public class Token {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
+    @Builder.Default
     @Column(name = "REISSUE_COUNT", nullable = false)
     private Integer reissueCount = 0;
 

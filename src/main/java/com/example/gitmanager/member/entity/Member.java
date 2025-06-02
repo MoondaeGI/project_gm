@@ -36,12 +36,14 @@ public class Member extends RecordTime {
     private String password;
     @Column(name = "PROFILE_IMG", length = 300, nullable = false)
     private String profileImg;
+    @Builder.Default
     @Enumerated(value = EnumType.STRING)
     @Column(name = "SIGNIN_TYPE", nullable = false)
-    private SignInType signInType;
+    private SignInType signInType = SignInType.NONE;
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     @Column(name = "ROLE", nullable = false)
-    private ROLE role;
+    private ROLE role = ROLE.USER;
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Token token;

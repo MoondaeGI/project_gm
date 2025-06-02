@@ -23,7 +23,7 @@ public class Project extends RecordTime {
     private Long id;
     @Column(name = "NAME", length = 100, nullable = false)
     private String name;
-    @Column(name = "DESCRIPTION", length = 500, nullable = false)
+    @Column(name = "DESCRIPTION", length = 500)
     private String description;
     @Column(name = "URL", length = 300, nullable = false)
     private String url;
@@ -37,4 +37,8 @@ public class Project extends RecordTime {
     private List<ProjectLike> projectLikeList;
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProjectView> projectViewList;
+
+    public void toggleType() {
+        this.type = this.type == ProjectType.PUBLIC ? ProjectType.PRIVATE : ProjectType.PUBLIC;
+    }
 }
