@@ -7,8 +7,8 @@ import java.util.List;
 public interface ProjectService {
     List<ProjectDTO> findAll(int page);
     List<ProjectDTO> findByMemberId(long memberId, int page);
-    ProjectDTO findById(long id);
+    ProjectDTO findById(long id, String loginId);
     void insert(String url);
-    void update();
+    void update(long id, String loginId);
     void delete(long id, String loginId);
 }

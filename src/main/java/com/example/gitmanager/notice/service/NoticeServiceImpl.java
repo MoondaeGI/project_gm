@@ -10,7 +10,6 @@ import com.example.gitmanager.notice.entity.NoticeCategory;
 import com.example.gitmanager.notice.repository.NoticeCategoryRepository;
 import com.example.gitmanager.notice.repository.NoticeRepository;
 import com.example.gitmanager.util.enums.Yn;
-import com.example.gitmanager.util.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -131,6 +130,13 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%d의 번호를 가진 공지사항은 없습니다.", id)));
+
+        FilesDTO filesDTO = FilesDTO.builder()
+                .mapperName("notice")
+                .mapperId(notice.getId())
+                .build();
+        fileService.deleteAll(filesDTO);
+
         noticeRepository.delete(notice);
     }
 
