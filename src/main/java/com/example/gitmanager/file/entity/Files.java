@@ -1,5 +1,6 @@
 package com.example.gitmanager.file.entity;
 
+import com.example.gitmanager.file.dto.FilesDTO;
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.project.entity.Project;
 import jakarta.persistence.*;

@@ -1,5 +1,6 @@
 package com.example.gitmanager.file.entity;
 
+import com.example.gitmanager.file.dto.FileDetailDTO;
 import com.example.gitmanager.util.entity.RecordTime;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,4 +31,14 @@ public class FileDetail extends RecordTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FILES_ID", nullable = false)
     private Files files;
+
+    public static FileDetail of(FileDetailDTO dto, Files files) {
+        return FileDetail.builder()
+                .originFileName(dto.getOriginFileName())
+                .systemFileName(dto.getSystemFileName())
+                .path(dto.getPath())
+                .fileSize(dto.getFileSize())
+                .files(files)
+                .build();
+    }
 }
