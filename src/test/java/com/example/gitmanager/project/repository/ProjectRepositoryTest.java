@@ -6,6 +6,7 @@ import com.example.gitmanager.project.entity.Project;
 import com.example.gitmanager.project.entity.ProjectMember;
 import com.example.gitmanager.util.enums.ProjectType;
 import com.example.gitmanager.util.enums.Yn;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -68,8 +69,8 @@ public class ProjectRepositoryTest {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
         Page<Project> projectPage = projectRepository.findByMember(member, pageRequest);
 
-        assertThat(projectPage.getContent().size())
-                .isEqualTo(1);
+        assertThat(projectPage.getContent().size()).isEqualTo(1);
+        assertThat(projectPage.getContent().get(0).getId()).isEqualTo(project.getId());
     }
 
     @DisplayName("countByMember 쿼리 테스트")
@@ -80,7 +81,8 @@ public class ProjectRepositoryTest {
         assertThat(count).isEqualTo(1);
     }
 
-    @DisplayName("countByMember 쿼리 테스트")
+    @DisplayName("countByMember 쿼리 증가값 테스트")
+    @Transactional
     @Test
     public void countByMemberTest2() {
         Project addedProject = Project.builder()
