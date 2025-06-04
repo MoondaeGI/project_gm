@@ -75,6 +75,7 @@ public class MemberServiceTest {
                 .loginId("test")
                 .password("test")
                 .build();
+
         assertThat(memberService.login(dto).getId()).isEqualTo(member.getId());
     }
 
@@ -86,6 +87,7 @@ public class MemberServiceTest {
                 .password("test")
                 .build();
         String token = memberService.login(dto).getToken();
+
         assertThat(jwtUtil.getLoginId(token)).isEqualTo("test");
     }
 
@@ -97,6 +99,7 @@ public class MemberServiceTest {
                 .password("test")
                 .build();
         String refreshToken = memberService.login(dto).getRefreshToken();
+
         assertThat(jwtUtil.getLoginId(refreshToken)).isEqualTo("test");
     }
 

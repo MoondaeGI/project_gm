@@ -1,6 +1,5 @@
 package com.example.gitmanager.member.service;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.gitmanager.member.entity.Member;
 import com.example.gitmanager.member.entity.Token;
 import com.example.gitmanager.member.repository.MemberRepository;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -40,8 +38,7 @@ public class TokenServiceImpl implements TokenService {
 
             return reissueToken;
         }
-        tokenRepository.delete(refreshToken);
 
-        throw new ExpiredRefreshTokenException();
+        throw new ExpiredRefreshTokenException(token);
     }
 }

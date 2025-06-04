@@ -1,8 +1,13 @@
 package com.example.gitmanager.util.exception;
 
+import lombok.Getter;
+
+@Getter
 public class ExpiredRefreshTokenException extends RuntimeException {
-    public ExpiredRefreshTokenException(String message) {
-        super(message);
+    private final String refreshToken;
+
+    public ExpiredRefreshTokenException(String refreshToken) {
+        super("refresh token이 만료되었습니다.");
+        this.refreshToken = refreshToken;
     }
-    public ExpiredRefreshTokenException() { super("refresh token이 만료되었습니다."); }
 }

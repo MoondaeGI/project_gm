@@ -1,6 +1,8 @@
 package com.example.gitmanager.util.filter;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.example.gitmanager.member.entity.Token;
+import com.example.gitmanager.member.repository.TokenRepository;
 import com.example.gitmanager.member.service.TokenService;
 import com.example.gitmanager.util.exception.ExpiredRefreshTokenException;
 import com.example.gitmanager.util.util.JWTUtil;
@@ -24,6 +26,7 @@ import java.util.List;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
     private final TokenService tokenService;
+    private final TokenRepository tokenRepository;
 
     private final static int TOKEN_EXPIRED = 498;
 
@@ -62,11 +65,16 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
                 request.setAttribute("loginId", loginID);
             }
-        } catch (TokenExpiredException e) {
+        } catch (TokenExpiredException e) {  // 토큰 유효 만료, 리프레시 토큰 요청
             response.setStatus(TOKEN_EXPIRED);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-        } catch (ExpiredRefreshTokenException e) {
+        } catch (ExpiredRefreshTokenException e) {  // 리프레시 토큰 유효 만료
+            Token refreshToken = tokenRepository.findByToken(e.getRefreshToken())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "해당 유저가 발급받은 refresh token이 없습니다."));
+            tokenRepository.delete(refreshToken);
+
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
