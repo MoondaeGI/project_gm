@@ -98,9 +98,9 @@ public class MemberServiceImpl implements MemberService {
             }
 
             member.update(dto);
+        } else {
+            throw new UnAuthenticationException();
         }
-
-        throw new UnAuthenticationException();
     }
 
     @Transactional
@@ -117,9 +117,9 @@ public class MemberServiceImpl implements MemberService {
         if (Objects.equals(member.getId(), loginMember.getId()) || loginMember.getRole().equals(ROLE.ADMIN)) {
             fileUtil.delete(member.getProfileImg());
             memberRepository.delete(member);
+        } else {
+            throw new UnAuthenticationException();
         }
-
-        throw new UnAuthenticationException();
     }
 
     @Override
