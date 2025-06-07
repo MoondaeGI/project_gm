@@ -12,7 +12,7 @@ public interface NoticeService {
     List<NoticeDTO> findByTitleContainingOrContentContaining(String title, String content, int page);
     List<NoticeDTO> findByCategoryAndTitleContainingOrContentContaining(long noticeCategoryId, String title, String content, int page);
     NoticeDTO findById(long id);
-    void insert(NoticeInsertDTO dto);
+    long insert(NoticeInsertDTO dto);
     void update(NoticeUpdateDTO dto);
     void delete(long id);
     void toggleOpenYn(long id);

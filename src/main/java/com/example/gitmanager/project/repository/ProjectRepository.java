@@ -14,11 +14,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query(value = "SELECT p " +
                     "FROM Project p " +
-                    "JOIN p.projectMemberList pm " +
+                    "JOIN p.projectMemberList pm ON p = pm.project " +
                     "WHERE pm.member = :member",
             countQuery = "SELECT COUNT(p) " +
                     "FROM Project p " +
-                    "JOIN p.projectMemberList pm " +
+                    "JOIN p.projectMemberList pm ON p = pm.project " +
                     "WHERE pm.member = :member"
     )
     Page<Project> findByMember(Member member, @NonNull Pageable pageable);

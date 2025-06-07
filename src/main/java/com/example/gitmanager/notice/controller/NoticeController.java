@@ -56,9 +56,8 @@ public class NoticeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody NoticeInsertDTO dto) {
-        noticeService.insert(dto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Long> insert(@RequestBody NoticeInsertDTO dto) {
+        return ResponseEntity.ok(noticeService.insert(dto));
     }
 
     @PutMapping

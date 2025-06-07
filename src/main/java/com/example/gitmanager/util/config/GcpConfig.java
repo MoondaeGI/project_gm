@@ -12,10 +12,8 @@ import java.io.IOException;
 
 @Configuration
 public class GcpConfig {
-    @Value("${gcp.bucket.key}")
-    private String bucketKey;
-    @Value("${gcp.bucket.project.id}")
-    private String projectId;
+    @Value("${gcp.bucket.key}") private String bucketKey;
+    @Value("${gcp.bucket.project.id}") private String projectId;
 
     @Bean
     public Storage getStorage() throws IOException {

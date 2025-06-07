@@ -95,7 +95,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Transactional
     @Override
-    public void insert(NoticeInsertDTO dto) {
+    public long insert(NoticeInsertDTO dto) {
         Notice notice = Notice.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
@@ -111,6 +111,8 @@ public class NoticeServiceImpl implements NoticeService {
                     .build();
             fileService.insert(dto.getMultipartFiles(), filesDTO);
         }
+
+        return notice.getId();
     }
 
     @Transactional
