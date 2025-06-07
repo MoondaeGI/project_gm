@@ -2,18 +2,22 @@ package com.example.gitmanager.util;
 
 import com.example.gitmanager.file.dto.FileDetailDTO;
 import com.example.gitmanager.file.dto.FilesDTO;
+import com.example.gitmanager.member.entity.Member;
+import com.example.gitmanager.member.repository.MemberRepository;
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.notice.repository.NoticeRepository;
 import com.example.gitmanager.project.entity.Project;
 import com.example.gitmanager.project.repository.ProjectRepository;
 import com.example.gitmanager.util.enums.ProjectType;
 import com.example.gitmanager.util.util.FileUtil;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,12 +32,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class FileUtilTest {
     @Autowired private FileUtil fileUtil;
     @Autowired private Storage storage;
-    @Autowired private ProjectRepository projectRepository;
+
+    @Mock private ProjectRepository projectRepository;
+    @Mock private MemberRepository memberRepository;
 
     @Value("${gcp.bucket.name}") private String bucketName;
 
     private MockMultipartFile testFile;
     private final String TEST_FILE_NAME = "test.txt";
+    private String filePath;
 
     @BeforeEach
     public void setup() {
@@ -43,7 +50,7 @@ public class FileUtilTest {
 
     @AfterEach
     public void teardown() {
-        BlobId blobId = BlobId.of(bucketName, TEST_FILE_NAME);
+        BlobId blobId = BlobId.of(bucketName, filePath);
         storage.delete(blobId);
     }
 
@@ -73,8 +80,23 @@ public class FileUtilTest {
                 .build();
         FileDetailDTO result = fileUtil.upload(dto, testFile);
 
-        assertThat(result.getPath())
-                .isEqualTo(String.format("https://storage.googleapis.com/notice/%s/%s",
-                        LocalDate.now(), result.getSystemFileName()));
+        filePath = result.getPath().replace(String.format("https://storage.googleapis.com/%s/", bucketName), "");
+        Blob blob = storage.get(BlobId.of(bucketName, filePath));
+
+        assertThat(blob).isNotNull();  // 파일이 존재하는지 확인
+        assertThat(new String(blob.getContent())).isEqualTo("test");
+
+        projectRepository.delete(project);
+    }
+
+    @DisplayName("프로필 이미지 업로드 테스트")
+    @Test
+    public void profileImageUploadTest() throws IOException {
+        String path = fileUtil.uploadProfileImg(testFile);
+        filePath = path.replace(String.format("https://storage.googleapis.com/%s/", bucketName), "");
+        Blob blob = storage.get(BlobId.of(bucketName, filePath));
+
+        assertThat(blob).isNotNull();  // 파일이 존재하는지 확인
+        assertThat(new String(blob.getContent())).isEqualTo("test");
     }
 }

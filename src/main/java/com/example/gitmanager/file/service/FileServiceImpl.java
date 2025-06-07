@@ -19,6 +19,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +67,11 @@ public class FileServiceImpl implements FileService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%d의 번호를 가진 유저가 없습니다.", memberId)));
-
-        String profileImgPath = fileUtil.uploadProfileImg(multipartFile);
+        try {
+            String profileImgPath = fileUtil.uploadProfileImg(multipartFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Transactional

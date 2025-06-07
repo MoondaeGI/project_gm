@@ -27,12 +27,13 @@ public class FileUtil {
     public FileDetailDTO upload(FilesDTO dto, MultipartFile file) throws IOException {
         String originFileName = file.getOriginalFilename();
         String systemFileName = UUID.randomUUID() + "_" + originFileName;
+        String filePath = String.format("%s/%s/%s", dto.getMapperName(), LocalDate.now(), systemFileName);
 
-        storage.create(
+        storage.createFrom(
                 BlobInfo.newBuilder(
-                        BlobId.of(bucketName, systemFileName)).build(), file.getInputStream());
-        String url = String.format("https://storage.googleapis.com/%s/%s/%s/%s",
-                bucketName, dto.getMapperName(), LocalDate.now(), systemFileName);
+                        BlobId.of(bucketName, filePath)).build(), file.getInputStream());
+        String url = String.format("https://storage.googleapis.com/%s/%s",
+                bucketName, filePath);
 
         return FileDetailDTO.builder()
                 .filesId(dto.getId())
@@ -43,12 +44,14 @@ public class FileUtil {
                 .build();
     }
 
-    public String uploadProfileImg(MultipartFile multipartFile) {
-        String originFileName = multipartFile.getOriginalFilename();
+    public String uploadProfileImg(MultipartFile file) throws IOException {
+        String originFileName = file.getOriginalFilename();
         String systemFileName = UUID.randomUUID() + "_" + originFileName;
+        String filePath = String.format("member/%s/%s", LocalDate.now(), systemFileName);
 
-        storage.create(BlobInfo.newBuilder(
-                BlobId.of(bucketName, systemFileName)).build());
+        storage.createFrom(
+                BlobInfo.newBuilder(
+                        BlobId.of(bucketName, filePath)).build(), file.getInputStream());
 
         return String.format("https://storage.googleapis.com/%s/member/%s/%s",
                 bucketName, LocalDate.now(), systemFileName);
