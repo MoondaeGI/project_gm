@@ -22,11 +22,9 @@ import java.util.List;
 public class Files {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "files_seq_gene")
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PROJECT_ID")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "PROJECT_ID")
     private Project project;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "NOTICE_ID")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "NOTICE_ID")
     private Notice notice;
 
     @OneToMany(mappedBy = "files", cascade = CascadeType.REMOVE, orphanRemoval = true)

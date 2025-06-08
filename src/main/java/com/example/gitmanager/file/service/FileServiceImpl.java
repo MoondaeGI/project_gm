@@ -99,7 +99,6 @@ public class FileServiceImpl implements FileService {
 
             if (!isExist) {
                 fileUtil.delete(originFile.getSystemFileName());
-                originalFileList.remove(originFile);
                 fileDetailRepository.delete(originFile);
             }
         }

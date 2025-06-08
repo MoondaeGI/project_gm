@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface FileDetailRepository extends JpaRepository<FileDetail, Long> {
     List<FileDetail> findByFiles(Files files);
     Optional<FileDetail> findBySystemFileName(String systemFileName);
+    Optional<FileDetail> findByOriginFileName(String originFileName);
 }

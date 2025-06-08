@@ -1,9 +1,11 @@
 package com.example.gitmanager.project.entity;
 
+import com.example.gitmanager.file.entity.Files;
 import com.example.gitmanager.util.entity.RecordTime;
 import com.example.gitmanager.util.enums.ProjectType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.List;
 
@@ -37,6 +39,10 @@ public class Project extends RecordTime {
     private List<ProjectLike> projectLikeList;
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProjectView> projectViewList;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ProjectMemberTemp> projectMemberTempList;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Files> filesList;
 
     public void toggleType() {
         this.type = this.type == ProjectType.PUBLIC ? ProjectType.PRIVATE : ProjectType.PUBLIC;
