@@ -1,5 +1,7 @@
 package com.example.gitmanager.project.entity;
 
+import com.example.gitmanager.board.entity.board.BoardCategory;
+import com.example.gitmanager.board.entity.notice.ProjectNotice;
 import com.example.gitmanager.file.entity.Files;
 import com.example.gitmanager.util.entity.RecordTime;
 import com.example.gitmanager.util.enums.ProjectType;
@@ -43,6 +45,10 @@ public class Project extends RecordTime {
     private List<ProjectMemberTemp> projectMemberTempList;
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Files> filesList;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<BoardCategory> boardCategoryList;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ProjectNotice> projectNoticeList;
 
     public void toggleType() {
         this.type = this.type == ProjectType.PUBLIC ? ProjectType.PRIVATE : ProjectType.PUBLIC;
