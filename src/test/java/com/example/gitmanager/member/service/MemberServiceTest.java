@@ -15,6 +15,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -49,7 +51,7 @@ public class MemberServiceTest {
     @DisplayName("회원가입 테스트")
     @Transactional
     @Test
-    public void signInTest() {
+    public void signInTest() throws IOException {
         SignInDTO dto = SignInDTO.builder()
                 .loginId("signupTest")
                 .name("test")
@@ -125,7 +127,7 @@ public class MemberServiceTest {
 
     @DisplayName("업데이트 테스트")
     @Test
-    public void updateTest() {
+    public void updateTest() throws IOException {
         MemberUpdateDTO dto = MemberUpdateDTO.builder()
                 .id(member.getId())
                 .name("update test")
@@ -167,7 +169,7 @@ public class MemberServiceTest {
 
     @DisplayName("운영자 접근 통과 확인")
     @Test
-    public void updateTest3() {
+    public void updateTest3() throws IOException {
         Member adminMember = Member.builder()
                 .loginId("admin")
                 .name("admin")

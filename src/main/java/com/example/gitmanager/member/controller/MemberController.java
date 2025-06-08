@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
 @RestController
@@ -22,14 +24,14 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> signIn(@RequestBody SignInDTO dto) {
+    public ResponseEntity<Void> signIn(@RequestBody SignInDTO dto) throws IOException {
         memberService.signIn(dto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
     public ResponseEntity<Void> update(
-            @RequestBody MemberUpdateDTO dto, HttpServletRequest request) {
+            @RequestBody MemberUpdateDTO dto, HttpServletRequest request) throws IOException {
         String loginId = (String) request.getAttribute("loginId");
 
         memberService.update(dto, loginId);

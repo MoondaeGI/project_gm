@@ -2,16 +2,13 @@ package com.example.gitmanager.util;
 
 import com.example.gitmanager.file.dto.FileDetailDTO;
 import com.example.gitmanager.file.dto.FilesDTO;
-import com.example.gitmanager.member.entity.Member;
-import com.example.gitmanager.member.repository.MemberRepository;
-import com.example.gitmanager.notice.entity.Notice;
-import com.example.gitmanager.notice.repository.NoticeRepository;
 import com.example.gitmanager.project.entity.Project;
 import com.example.gitmanager.project.repository.ProjectRepository;
 import com.example.gitmanager.util.enums.ProjectType;
 import com.example.gitmanager.util.util.FileUtil;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,10 +18,10 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -34,7 +31,6 @@ public class FileUtilTest {
     @Autowired private Storage storage;
 
     @Mock private ProjectRepository projectRepository;
-    @Mock private MemberRepository memberRepository;
 
     @Value("${gcp.bucket.name}") private String bucketName;
 
@@ -66,6 +62,7 @@ public class FileUtilTest {
     @DisplayName("gcp 업로드 테스트")
     @Test
     public void uploadTest() throws IOException {
+        // 입력받을 더미 프로젝트 생성
         Project project = Project.builder()
                 .name("test")
                 .description("test")
@@ -98,5 +95,20 @@ public class FileUtilTest {
 
         assertThat(blob).isNotNull();  // 파일이 존재하는지 확인
         assertThat(new String(blob.getContent())).isEqualTo("test");
+    }
+
+    @DisplayName("다운로드 테스트")
+    @Test
+    public void downloadTest() throws IOException {
+        filePath = "test/" + TEST_FILE_NAME;
+        storage.createFrom(
+                BlobInfo.newBuilder(BlobId.of(bucketName, filePath)).build(),
+                testFile.getInputStream());
+
+        String url = String.format("https://storage.googleapis.com/%s/%s", bucketName, filePath);
+        ByteArrayResource resource = fileUtil.download(url);
+
+        assertThat(resource).isNotNull();
+        assertThat(new String(resource.getByteArray())).isEqualTo("test");
     }
 }

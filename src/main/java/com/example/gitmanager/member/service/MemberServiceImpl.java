@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,7 +62,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void signIn(SignInDTO dto) {
+    public void signIn(SignInDTO dto) throws IOException {
         String password = passwordUtil.encodePassword(dto.getPassword());
 
         if (dto.getMultipartFile() != null) {
@@ -82,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void update(MemberUpdateDTO dto, String loginId) {
+    public void update(MemberUpdateDTO dto, String loginId) throws IOException {
         Member loginMember = memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%s를 가진 회원은 존재하지 않습니다.", loginId)));

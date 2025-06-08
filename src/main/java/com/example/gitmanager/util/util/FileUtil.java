@@ -57,22 +57,28 @@ public class FileUtil {
                 bucketName, LocalDate.now(), systemFileName);
     }
 
-    public void delete(String fileName) {
-        BlobId blobId = BlobId.of(bucketName, fileName);
-        storage.delete(blobId);
+    public void delete(String path) {
+        storage.delete(getBlobId(path));
     }
 
-    public ByteArrayResource download(String fileName) {
+    public ByteArrayResource download(String path) {
         try {
-            Blob blob = storage.get(BlobId.of(bucketName, fileName));
+            Blob blob = storage.get(getBlobId(path));
 
-            if (blob != null) {
+            if (blob == null) {
                 throw new IllegalArgumentException("해당 파일은 존재하지 않습니다.");
             }
 
             return new ByteArrayResource(blob.getContent());
         } catch (Exception e) {
-            throw new IllegalArgumentException("다운로드가 실패했습니다.");
+                throw new RuntimeException("다운로드가 실패했습니다.");
         }
+    }
+
+    private BlobId getBlobId(String path) {
+        String filePath = path
+                .replace(String.format("https://storage.googleapis.com/%s/", bucketName), "");
+
+        return BlobId.of(bucketName, filePath);
     }
 }

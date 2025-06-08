@@ -62,18 +62,6 @@ public class FileServiceImpl implements FileService {
                         String.format("%s의 이름을 가진 파일이 존재하지 않습니다.", systemFileName))));
     }
 
-    @Override
-    public void updateProfileImg(MultipartFile multipartFile, long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("%d의 번호를 가진 유저가 없습니다.", memberId)));
-        try {
-            String profileImgPath = fileUtil.uploadProfileImg(multipartFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Transactional
     @Override
     public void insert(MultipartFile[] multipartFiles, FilesDTO dto) {
