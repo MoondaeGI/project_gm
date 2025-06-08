@@ -6,8 +6,6 @@ import com.example.gitmanager.file.entity.FileDetail;
 import com.example.gitmanager.file.entity.Files;
 import com.example.gitmanager.file.repository.FileDetailRepository;
 import com.example.gitmanager.file.repository.FilesRepository;
-import com.example.gitmanager.member.entity.Member;
-import com.example.gitmanager.member.repository.MemberRepository;
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.notice.repository.NoticeRepository;
 import com.example.gitmanager.project.entity.Project;
@@ -19,7 +17,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,6 @@ public class FileServiceImpl implements FileService {
     private final FileDetailRepository fileDetailRepository;
     private final NoticeRepository noticeRepository;
     private final ProjectRepository projectRepository;
-    private final MemberRepository memberRepository;
 
     private final FileUtil fileUtil;
 

@@ -94,7 +94,9 @@ public class MemberServiceImpl implements MemberService {
 
         if (Objects.equals(member.getId(), loginMember.getId()) || loginMember.getRole().equals(ROLE.ADMIN)) {
             if (dto.getMultipartFile() != null) {
-                String profileImg = fileUtil.uploadProfileImg(dto.getMultipartFile());
+                fileUtil.delete(member.getProfileImg());  // 기존 프로필 이미지 삭제
+                String profileImg = fileUtil.uploadProfileImg(dto.getMultipartFile());  // 새로운 프로필 이미지 업로드
+
                 dto.setProfileImg(profileImg);
             }
 
