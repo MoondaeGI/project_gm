@@ -1,5 +1,7 @@
 package com.example.gitmanager.file.service;
 
+import com.example.gitmanager.board.entity.board.Board;
+import com.example.gitmanager.board.repository.board.BoardRepository;
 import com.example.gitmanager.file.dto.FileDetailDTO;
 import com.example.gitmanager.file.dto.FilesDTO;
 import com.example.gitmanager.file.entity.FileDetail;
@@ -27,6 +29,7 @@ public class FileServiceImpl implements FileService {
     private final FileDetailRepository fileDetailRepository;
     private final NoticeRepository noticeRepository;
     private final ProjectRepository projectRepository;
+    private final BoardRepository boardRepository;
 
     private final FileUtil fileUtil;
 
@@ -151,24 +154,35 @@ public class FileServiceImpl implements FileService {
     }
 
     private Files create(FilesDTO dto) {
-        if (dto.getMapperName().equals("notice")) {
-            Notice notice = noticeRepository.findById(dto.getMapperId())
-                    .orElseThrow(() -> new IllegalArgumentException(
-                            String.format("%d의 번호를 가진 공지사항이 없습니다.", dto.getMapperId())));
+        switch (dto.getMapperName()) {
+            case "notice" -> {
+                Notice notice = noticeRepository.findById(dto.getMapperId())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                String.format("%d의 번호를 가진 공지사항이 없습니다.", dto.getMapperId())));
 
-            return Files.builder()
-                    .notice(notice)
-                    .build();
-        } else if (dto.getMapperName().equals("project")) {
-            Project project = projectRepository.findById(dto.getMapperId())
-                    .orElseThrow(() -> new IllegalArgumentException(
-                            String.format("%d의 번호를 가진 프로젝트가 없습니다.", dto.getMapperId())));
+                return Files.builder()
+                        .notice(notice)
+                        .build();
+            }
+            case "project" -> {
+                Project project = projectRepository.findById(dto.getMapperId())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                String.format("%d의 번호를 가진 프로젝트가 없습니다.", dto.getMapperId())));
 
-            return Files.builder()
-                    .project(project)
-                    .build();
-        } else {
-            throw new IllegalArgumentException("잘못된 경로의 파일입니다.");
+                return Files.builder()
+                        .project(project)
+                        .build();
+            }
+            case "board" -> {
+                Board board = boardRepository.findById(dto.getMapperId())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                String.format("%d의 번호를 가진 게시글이 없습니다.", dto.getMapperId())));
+
+                return Files.builder()
+                        .board(board)
+                        .build();
+            }
+            default -> throw new IllegalArgumentException("잘못된 경로의 파일입니다.");
         }
     }
 }

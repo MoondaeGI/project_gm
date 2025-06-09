@@ -64,11 +64,15 @@ public class BoardServiceImpl implements BoardService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public BoardDTO findById(long id) {
-        return BoardDTO.of(boardRepository.findById(id)
+        Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("%d의 번호를 가진 게시글이 없습니다.", id))));
+                        String.format("%d의 번호를 가진 게시글이 없습니다.", id)));
+        board.increaseViewCount();
+
+        return BoardDTO.of(board);
     }
 
     @Transactional
