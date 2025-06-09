@@ -1,7 +1,7 @@
 package com.example.gitmanager.file.entity;
 
 import com.example.gitmanager.board.entity.board.Board;
-import com.example.gitmanager.file.dto.FilesDTO;
+import com.example.gitmanager.board.entity.notice.ProjectNotice;
 import com.example.gitmanager.notice.entity.Notice;
 import com.example.gitmanager.project.entity.Project;
 import jakarta.persistence.*;
@@ -29,6 +29,8 @@ public class Files {
     private Notice notice;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "BOARD_ID")
     private Board board;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "PROJECT_NOTICE_ID")
+    private ProjectNotice projectNotice;
 
     @OneToMany(mappedBy = "files", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<FileDetail> fileDetailList;

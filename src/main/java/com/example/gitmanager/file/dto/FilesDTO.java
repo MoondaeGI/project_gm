@@ -28,6 +28,9 @@ public class FilesDTO {
         } else if (files.getBoard() != null) {
             mapperName = "board";
             mapperId = files.getBoard().getId();
+        } else if (files.getProjectNotice() != null) {
+            mapperName = "projectNotice";
+            mapperId = files.getProjectNotice().getId();
         } else {
             throw new IllegalArgumentException("Files is not mapped.");
         }

@@ -1,7 +1,9 @@
 package com.example.gitmanager.file.service;
 
 import com.example.gitmanager.board.entity.board.Board;
+import com.example.gitmanager.board.entity.notice.ProjectNotice;
 import com.example.gitmanager.board.repository.board.BoardRepository;
+import com.example.gitmanager.board.repository.notice.ProjectNoticeRepository;
 import com.example.gitmanager.file.dto.FileDetailDTO;
 import com.example.gitmanager.file.dto.FilesDTO;
 import com.example.gitmanager.file.entity.FileDetail;
@@ -30,6 +32,7 @@ public class FileServiceImpl implements FileService {
     private final NoticeRepository noticeRepository;
     private final ProjectRepository projectRepository;
     private final BoardRepository boardRepository;
+    private final ProjectNoticeRepository projectNoticeRepository;
 
     private final FileUtil fileUtil;
 
@@ -180,6 +183,15 @@ public class FileServiceImpl implements FileService {
 
                 return Files.builder()
                         .board(board)
+                        .build();
+            }
+            case "projectNotice" -> {
+                ProjectNotice projectNotice = projectNoticeRepository.findById(dto.getMapperId())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                String.format("%d의 번호를 가진 프로젝트 공지사항이 없습니다.", dto.getMapperId())));
+
+                return Files.builder()
+                        .projectNotice(projectNotice)
                         .build();
             }
             default -> throw new IllegalArgumentException("잘못된 경로의 파일입니다.");
