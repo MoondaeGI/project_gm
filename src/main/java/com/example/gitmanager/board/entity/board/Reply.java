@@ -34,4 +34,8 @@ public class Reply extends RecordTime {
 
     @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private java.util.List<Reply> children;
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

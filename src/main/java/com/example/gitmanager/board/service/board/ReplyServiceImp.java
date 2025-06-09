@@ -2,6 +2,7 @@ package com.example.gitmanager.board.service.board;
 
 import com.example.gitmanager.board.dto.board.ReplyDTO;
 import com.example.gitmanager.board.dto.board.ReplyInsertDTO;
+import com.example.gitmanager.board.dto.board.ReplyUpdateDTO;
 import com.example.gitmanager.board.entity.board.Board;
 import com.example.gitmanager.board.entity.board.Reply;
 import com.example.gitmanager.board.repository.board.BoardRepository;
@@ -86,9 +87,26 @@ public class ReplyServiceImp implements ReplyService {
         return reply.getId();
     }
 
+    @Transactional
     @Override
-    public long update(ReplyDTO dto, String loginId) {
-        return 0;
+    public long update(ReplyUpdateDTO dto, String loginId) {
+        Reply reply = replyRepository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%d의 번호를 가진 댓글이 없습니다.", dto.getId())));
+
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%s의 아이디를 가진 회원이 없습니다.", loginId)));
+
+        ProjectMember projectMember = projectMemberRepository
+                .findByProjectAndMember(reply.getBoard().getBoardCategory().getProject(), member);
+        if (projectMember.getId() == reply.getWriter().getId()) {
+            reply.update(dto.getContent());
+        } else {
+            throw new UnAuthenticationException();
+        }
+
+        return dto.getId();
     }
 
     @Override
@@ -96,5 +114,17 @@ public class ReplyServiceImp implements ReplyService {
         Reply reply = replyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("%d의 번호를 가진 댓글이 없습니다.", id)));
+
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%s의 아이디를 가진 회원이 없습니다.", loginId)));
+
+        ProjectMember projectMember = projectMemberRepository
+                .findByProjectAndMember(reply.getBoard().getBoardCategory().getProject(), member);
+        if (projectMember.getId() == reply.getWriter().getId()) {
+            replyRepository.delete(reply);
+        } else {
+            throw new UnAuthenticationException();
+        }
     }
 }
