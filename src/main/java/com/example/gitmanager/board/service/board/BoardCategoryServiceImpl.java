@@ -91,8 +91,22 @@ public class BoardCategoryServiceImpl implements BoardCategoryService {
         return dto.getId();
     }
 
+    @Transactional
     @Override
     public void delete(long id, String loginId) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%s의 아이디를 가진 회원이 없습니다.", loginId)));
 
+        BoardCategory boardCategory = boardCategoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%d의 번호를 가진 게시글 카테고리가 없습니다.", id)));
+
+        ProjectMember projectMember = projectMemberRepository.findByProjectAndMember(boardCategory.getProject(), member);
+        if (projectMember.getLeaderYn().equals(Yn.N) || projectMember == null) {
+            throw new UnAuthenticationException();
+        }
+
+        boardCategoryRepository.delete(boardCategory);
     }
 }
